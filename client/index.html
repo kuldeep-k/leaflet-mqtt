@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css">
+<script src="bower_components/leaflet/dist/leaflet.js" type="text/javascript"></script>
+<script src="bower_components/paho-mqtt/src/mqttws31.js" type="text/javascript"></script>
+
+</head>
+<body>
+<div id="map" style="height: 600px; width: 800px; border: 1px dashed #2f2f2f;"></div>
+
+<script type="text/javascript">
+
+var map = L.map('map').setView([28.66,  77.379 ], 14);
+
+L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    mqtt_init();
+}, false);
+
+
+function mqtt_init() {
+    // Create a client instance
+client = new Paho.MQTT.Client('localhost', 9001, "mqtt-spublisher");
+
+// set callback handlers
+client.onConnectionLost = onConnectionLost;
+client.onMessageArrived = onMessageArrived;
+
+// connect the client
+client.connect({onSuccess:onConnect});
+
+
+// called when the client connects
+function onConnect() {
+  // Once a connection has been made, make a subscription and send a message.
+  console.log("onConnect");
+  client.subscribe("map/coordinates");
+  //message = new Paho.MQTT.Message("Hello");
+  //message.destinationName = "World";
+  //client.send(message);
+}
+
+// called when the client loses its connection
+function onConnectionLost(responseObject) {
+  if (responseObject.errorCode !== 0) {
+//    client.connect({onSuccess:onConnect});
+    console.log("onConnectionLost:"+responseObject.errorMessage);
+  }
+}
+
+// called when a message arrives
+function onMessageArrived(message) {
+  console.log("onMessageArrived:" + message.payloadString);
+    msg = JSON.parse(message.payloadString);
+    L.marker([msg[0], msg[1] ]).addTo(map)
+    .bindPopup(msg[2])
+    .openPopup();
+
+}
+}
+</script>
+</body>
+</html>

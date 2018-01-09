@@ -1,0 +1,8 @@
+{
+    "name": "kuldeep/mqttserver",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "bluerhinos/phpmqtt": "dev-master" 
+    }
+}
