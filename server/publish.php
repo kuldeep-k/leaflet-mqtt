@@ -8,10 +8,10 @@ $password = "";                   // set your password
 $client_id = "mqtt-publisher"; // make sure this is unique for connecting to sever - you could use uniqid()
 
 $coords = [
-    [ 28.6673034, 77.3875586, 'Sector 2, Vasundhara, Ghaziabad, UP, India' ],
-    [ 28.6636672, 77.3843036, 'Sector 3, Vasundhara, Ghaziabad, UP, India' ],
-    [ 28.668002,  77.3797523, 'Sector 4, Vasundhara, Ghaziabad, UP, India' ],
-    [ 28.6613294, 77.3745191, 'Sector 5, Vasundhara, Ghaziabad, UP, India' ]
+    [ 28.6442033, 77.1118256, 'Location 1' ],
+    [ 28.5501396, 77.1882317, 'Location 2' ],
+    [ 28.6359866, 77.2608032, 'Location 3' ],
+    [ 28.6805603, 77.1991786, 'Location 4' ]
 ];
 $mqtt = new phpMQTT($server, $port, $client_id);
 if ($mqtt->connect(true, NULL, $username, $password)) {
